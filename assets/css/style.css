@@ -1,9 +1,8 @@
-/* HỆ THỐNG QUẢN LÝ TUYỂN DỤNG - STYLE CHUẨN #D32F2F */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', 'Inter', sans-serif;
 }
 
 body {
@@ -17,10 +16,9 @@ body {
     min-height: 100vh;
 }
 
-/* SIDEBAR */
 .sidebar {
     width: 240px;
-    background-color: #D32F2F;
+    background-color: #1e2229; 
     color: #ffffff;
     display: flex;
     flex-direction: column;
@@ -29,16 +27,17 @@ body {
 
 .sidebar-brand {
     padding: 20px 16px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
     display: flex;
     align-items: center;
     gap: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #D32F2F; 
 }
 
 .brand-icon {
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .sidebar-nav {
@@ -52,28 +51,29 @@ body {
     align-items: center;
     gap: 12px;
     padding: 12px 20px;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.75);
     text-decoration: none;
     font-size: 13px;
     font-weight: 500;
-    transition: background-color 0.15s;
+    transition: all 0.15s;
 }
 
 .nav-item:hover {
-    background-color: rgba(255, 255, 255, 0.12);
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
 }
 
 .nav-item.active {
-    background-color: rgba(0, 0, 0, 0.22);
+    background-color: #D32F2F;
+    color: #ffffff;
     font-weight: 700;
-    border-left: 4px solid #ffffff;
+    border-left: none;
 }
 
 .nav-icon {
-    font-size: 16px;
+    font-size: 15px;
 }
 
-/* MAIN CONTENT */
 .main-content {
     flex: 1;
     display: flex;
@@ -101,6 +101,7 @@ body {
     position: relative;
     cursor: pointer;
     font-size: 18px;
+    color: #64748b;
 }
 
 .badge-dot {
@@ -144,12 +145,11 @@ body {
 }
 
 .section-header h2 {
-    font-size: 20px;
-    color: #1e293b;
+    font-size: 18px;
+    color: #0f172a;
     font-weight: 700;
 }
 
-/* CARDS & STATS */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -162,6 +162,7 @@ body {
     padding: 20px;
     border-radius: 8px;
     border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
 }
 
 .stat-label {
@@ -171,7 +172,7 @@ body {
 }
 
 .stat-value {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
     color: #0f172a;
 }
@@ -181,7 +182,6 @@ body {
 .text-orange { color: #f59e0b; }
 .text-red { color: #D32F2F; }
 
-/* CHARTS */
 .charts-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -212,6 +212,7 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
+    color: #475569;
 }
 
 .dot {
@@ -242,7 +243,7 @@ body {
 }
 
 .bar-track {
-    height: 20px;
+    height: 18px;
     background-color: #f1f5f9;
     border-radius: 4px;
     overflow: hidden;
@@ -250,16 +251,15 @@ body {
 
 .bar-fill {
     height: 100%;
-    background-color: #D32F2F;
+    background-color: #2563eb;
     color: #ffffff;
     font-size: 11px;
     font-weight: 700;
     text-align: right;
     padding-right: 8px;
-    line-height: 20px;
+    line-height: 18px;
 }
 
-/* TABLES & CONTROLS */
 .filter-bar {
     display: flex;
     gap: 12px;
@@ -276,6 +276,7 @@ body {
     border-radius: 6px;
     font-size: 13px;
     outline: none;
+    color: #334155;
 }
 
 .input-control:focus, .select-control:focus {
@@ -284,7 +285,9 @@ body {
 
 .table-container {
     overflow-x: auto;
-    padding: 0;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
 }
 
 .data-table {
@@ -306,7 +309,7 @@ body {
 }
 
 .badge {
-    padding: 4px 8px;
+    padding: 4px 10px;
     border-radius: 12px;
     font-size: 11px;
     font-weight: 600;
@@ -327,6 +330,7 @@ body {
     border: none;
     text-decoration: none;
     display: inline-block;
+    transition: background-color 0.15s;
 }
 
 .btn-primary {
@@ -349,202 +353,19 @@ body {
     font-size: 11px;
 }
 
-.btn-block {
-    width: 100%;
-    padding: 10px;
-}
-
 .action-icons button {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 15px;
-    margin-right: 6px;
-}
-
-/* CANDIDATE CARDS */
-.candidates-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 16px;
-}
-
-.candidate-card {
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 16px;
-}
-
-.candidate-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-}
-
-.candidate-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: #D32F2F;
-    color: #fff;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.candidate-name {
     font-size: 14px;
-    font-weight: 700;
-    color: #0f172a;
-}
-
-.candidate-pos {
-    font-size: 11px;
+    margin-right: 8px;
     color: #64748b;
 }
 
-.candidate-body {
-    font-size: 12px;
-    color: #334155;
-    margin-bottom: 12px;
-    line-height: 1.6;
-}
-
-.candidate-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #f1f5f9;
-    padding-top: 10px;
-}
-
-/* INTERVIEW SCHEDULE */
-.week-picker {
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.day-tabs {
-    display: flex;
-    gap: 8px;
-    overflow-x: auto;
-}
-
-.day-tab {
-    padding: 6px 12px;
-    border-radius: 6px;
-    background: #f1f5f9;
-    text-decoration: none;
-    color: #475569;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.day-tab.active {
-    background: #D32F2F;
-    color: #fff;
-}
-
-.interviews-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.interview-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-}
-
-.interview-time {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 16px;
-    font-weight: 700;
+.action-icons button:hover {
     color: #D32F2F;
-    width: 100px;
 }
 
-.interview-candidate h4 {
-    font-size: 14px;
-    color: #0f172a;
-}
-
-.interview-candidate p {
-    font-size: 12px;
-    color: #64748b;
-}
-
-/* EVALUATION CARD */
-.eval-card {
-    padding: 24px;
-}
-
-.eval-meta {
-    display: flex;
-    gap: 30px;
-    font-size: 13px;
-    color: #475569;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-.score-input {
-    width: 70px;
-    text-align: center;
-    font-weight: 700;
-}
-
-.eval-summary {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f8fafc;
-    padding: 16px;
-    border-radius: 8px;
-    margin-top: 20px;
-}
-
-.big-score {
-    font-size: 24px;
-    font-weight: 900;
-    color: #D32F2F;
-    margin-left: 8px;
-}
-
-/* FUNNEL */
-.funnel-step {
-    margin-bottom: 14px;
-}
-
-.funnel-header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    margin-bottom: 4px;
-}
-
-.funnel-bar {
-    height: 18px;
-    background-color: #f1f5f9;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.funnel-bar div {
-    height: 100%;
-}
-
-/* LOGIN PAGE */
 .login-page {
     background-color: #1e2229;
     display: flex;
@@ -567,14 +388,14 @@ body {
 }
 
 .login-icon {
-    font-size: 40px;
+    font-size: 36px;
     color: #D32F2F;
     margin-bottom: 8px;
 }
 
 .login-header h2 {
     color: #0f172a;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
 }
 
@@ -598,23 +419,4 @@ body {
 
 .form-group .input-control {
     width: 100%;
-}
-
-.form-check {
-    margin-bottom: 20px;
-    font-size: 12px;
-    color: #64748b;
-}
-
-.alert {
-    padding: 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    margin-bottom: 16px;
-}
-
-.alert-danger {
-    background-color: #fee2e2;
-    color: #b91c1c;
-    border: 1px solid #fca5a5;
 }
