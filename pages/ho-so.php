@@ -1,7 +1,8 @@
 <?php
-require_once 'ketnoi.php';
+$basePath = '../';
+require_once __DIR__ . '/../config/database.php';
 $pageTitle = 'Hồ sơ ứng tuyển';
-include 'header.php';
+include __DIR__ . '/../includes/header.php';
 ?>
 
 <div class="section-header">
@@ -58,4 +59,4 @@ include 'header.php';
     </table>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>

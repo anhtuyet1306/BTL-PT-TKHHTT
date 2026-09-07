@@ -1,8 +1,9 @@
 <?php
-require_once 'ketnoi.php';
+$basePath = '../';
+require_once __DIR__ . '/../config/database.php';
 $selectedCandidate = isset($_GET['candidate']) ? htmlspecialchars($_GET['candidate']) : 'Nguyễn Văn A';
 $pageTitle = 'Đánh giá ứng viên: ' . $selectedCandidate;
-include 'header.php';
+include __DIR__ . '/../includes/header.php';
 
 $criteria = [
     ['id' => 1, 'name' => 'Kiến thức chuyên môn', 'score' => 8.5, 'comment' => 'Nắm chắc kiến thức PHP và SQL'],
@@ -71,4 +72,4 @@ $totalScore = round(array_sum(array_column($criteria, 'score')) / count($criteri
     </form>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include __DIR__ . '/../includes/footer.php'; ?>

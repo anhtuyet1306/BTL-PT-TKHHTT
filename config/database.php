@@ -1,7 +1,7 @@
 <?php
 /**
  * HỆ THỐNG QUẢN LÝ TUYỂN DỤNG - BTL PT-TKHHTT
- * File: ketnoi.php - Cấu hình kết nối CSDL và dữ liệu dùng chung
+ * File: config/database.php - Kết nối CSDL MySQL và dữ liệu mẫu
  */
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

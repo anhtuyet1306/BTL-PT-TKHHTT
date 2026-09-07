@@ -2,56 +2,83 @@
 
 > **Bài Tập Lớn: Phân Tích Thiết Kế Hệ Thống Thông Tin (BTL-PT-TKHHTT)**  
 > **Repository:** [https://github.com/anhtuyet1306/BTL-PT-TKHHTT](https://github.com/anhtuyet1306/BTL-PT-TKHHTT)  
-> **Kiến trúc mã nguồn:** PHP phân tách từng trang độc lập, HTML5, CSS3, MySQL.
+> **Cấu trúc:** Kiến trúc phân tầng Module chuyên nghiệp (config, includes, pages, assets, database).
 
 ---
 
-## 1. Cấu trúc từng trang PHP trong hệ thống:
-Hệ thống được chia thành các tệp PHP độc lập, giúp điều hướng trực tiếp qua URL hoặc qua Menu bên trái:
-
-| Tên tệp tin | Chức năng nghiệp vụ | Đường dẫn truy cập trên Apache |
-|---|---|---|
-| `index.php` | Trang chủ Tổng quan (Dashboard) | `http://localhost/tuyendung/index.php` |
-| `vi-tri.php` | Quản lý Vị trí tuyển dụng | `http://localhost/tuyendung/vi-tri.php` |
-| `ung-vien.php` | Quản lý Hồ sơ ứng viên | `http://localhost/tuyendung/ung-vien.php` |
-| `ho-so.php` | Tiếp nhận hồ sơ & Duyệt CV | `http://localhost/tuyendung/ho-so.php` |
-| `lich-phong-van.php` | Sắp xếp lịch phỏng vấn theo tuần | `http://localhost/tuyendung/lich-phong-van.php` |
-| `danh-gia.php` | Form chấm điểm tiêu chí ứng viên | `http://localhost/tuyendung/danh-gia.php` |
-| `ket-qua.php` | Kết quả tuyển dụng & Job Offer | `http://localhost/tuyendung/ket-qua.php` |
-| `bao-cao.php` | Thống kê & Phễu tuyển dụng | `http://localhost/tuyendung/bao-cao.php` |
-| `dang-nhap.php` | Đăng nhập hệ thống HR | `http://localhost/tuyendung/dang-nhap.php` |
-| `header.php` | Layout đầu trang chung | Tự động nhúng qua `include` |
-| `sidebar.php` | Thanh menu đỏ #D32F2F chung | Tự động nhúng qua `include` |
-| `footer.php` | Layout chân trang chung | Tự động nhúng qua `include` |
-| `ketnoi.php` | Cấu hình MySQL & Dữ liệu mẫu | Tự động kết nối |
-| `style.css` | Bảng màu & Định dạng CSS | Dùng chung toàn hệ thống |
-| `database.sql` | Script tạo CSDL MySQL | Nhập vào phpMyAdmin |
+## 1. Cấu trúc thư mục dự án chuẩn:
+```
+tuyendung/
+├── index.php                 # Trang chủ Tổng quan (Dashboard)
+├── config/
+│   └── database.php          # Cấu hình kết nối MySQL và dữ liệu mẫu
+├── includes/
+│   ├── header.php            # Phần đầu trang dùng chung
+│   ├── sidebar.php           # Thanh menu đỏ (#D32F2F) điều hướng
+│   └── footer.php            # Phần chân trang dùng chung
+├── pages/                    # Các trang nghiệp vụ tuyển dụng
+│   ├── vi-tri.php            # Quản lý vị trí tuyển dụng
+│   ├── ung-vien.php          # Quản lý hồ sơ ứng viên
+│   ├── ho-so.php             # Tiếp nhận hồ sơ & duyệt CV
+│   ├── lich-phong-van.php    # Lịch phỏng vấn tuần
+│   ├── danh-gia.php          # Đánh giá & chấm điểm tiêu chí
+│   ├── ket-qua.php           # Kết quả tuyển dụng & Job Offer
+│   ├── bao-cao.php           # Báo cáo thống kê & phễu tuyển dụng
+│   └── dang-nhap.php         # Đăng nhập hệ thống HR
+├── assets/
+│   ├── css/
+│   │   └── style.css         # CSS màu đỏ chuẩn #D32F2F
+│   └── js/
+│       └── script.js         # JavaScript tính điểm & tương tác
+├── database/
+│   └── database.sql          # File CSDL MySQL
+└── README.md                 # Tài liệu thuyết minh đề tài
+```
 
 ---
 
-## 2. Cách chạy trên máy tính với Apache (XAMPP)
+## 2. Hướng dẫn chạy trên máy tính với Apache (XAMPP)
 
-1. Cài đặt **XAMPP**.
-2. Giải nén tất cả các file trên vào thư mục:
+1. Cài đặt **XAMPP** và khởi động **Apache**.
+2. Đặt toàn bộ thư mục vào:
+   - **Windows:** `C:\xampp\htdocs\tuyendung\`
+   - **MacOS:** `/Applications/XAMPP/htdocs/tuyendung/`
+3. Mở **Google Chrome** và truy cập:
    ```
-   C:\xampp\htdocs\tuyendung\
+   http://localhost/tuyendung/index.php
    ```
-3. Mở **XAMPP Control Panel**, nhấn nút **Start** ở module **Apache**.
-4. Mở **Google Chrome** và truy cập bất kỳ trang nào bạn muốn:
-   - Trang tổng quan: `http://localhost/tuyendung/index.php`
-   - Trang vị trí tuyển dụng: `http://localhost/tuyendung/vi-tri.php`
-   - Trang ứng viên: `http://localhost/tuyendung/ung-vien.php`
-   - Trang lịch phỏng vấn: `http://localhost/tuyendung/lich-phong-van.php`
-   - Trang đánh giá: `http://localhost/tuyendung/danh-gia.php`
+   Hoặc truy cập trực tiếp từng phân hệ:
+   ```
+   http://localhost/tuyendung/pages/vi-tri.php
+   http://localhost/tuyendung/pages/ung-vien.php
+   http://localhost/tuyendung/pages/lich-phong-van.php
+   http://localhost/tuyendung/pages/danh-gia.php
+   http://localhost/tuyendung/pages/ket-qua.php
+   ```
 
 ---
 
-## 3. Lệnh Git đẩy lên repository GitHub:
+## 3. Hướng dẫn đẩy lên GitHub (Nhánh `main`)
+
+> **Hỏi: Có phải tạo branch riêng không hay trực tiếp trên `main`?**  
+> **Trả lời:** Với Bài tập lớn (BTL), bạn nên **đẩy trực tiếp lên nhánh `main`**. Khi giảng viên mở link GitHub `https://github.com/anhtuyet1306/BTL-PT-TKHHTT` sẽ thấy ngay đầy đủ mã nguồn và cấu trúc thư mục sạch đẹp ở trang đầu tiên!
+
 ```bash
+# 1. Mở Git Bash tại thư mục này
 git init
+
+# 2. Thêm tất cả thư mục và file
 git add .
-git commit -m "Phan tach he thong quan ly tuyen dung thanh tung trang PHP doc lap"
+
+# 3. Commit mã nguồn
+git commit -m "Khoi tao cau truc thu muc he thong tuyen dung BTL PT TKHHTT"
+
+# 4. Đặt tên nhánh chính là main
 git branch -M main
+
+# 5. Thêm remote GitHub
 git remote add origin https://github.com/anhtuyet1306/BTL-PT-TKHHTT.git
+
+# 6. Đẩy lên nhánh main
 git push -u origin main
 ```

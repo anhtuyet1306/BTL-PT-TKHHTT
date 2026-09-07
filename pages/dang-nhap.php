@@ -1,15 +1,15 @@
 <?php
-require_once 'ketnoi.php';
+$basePath = '../';
+require_once __DIR__ . '/../config/database.php';
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = isset($_POST['email']) ? trim($_POST['email']) : '';
     $pass = isset($_POST['password']) ? trim($_POST['password']) : '';
 
-    // Mặc định cho phép tài khoản HR hoặc bất kỳ
     if (!empty($email)) {
         $_SESSION['user'] = $email;
-        header('Location: index.php');
+        header('Location: ../index.php');
         exit;
     } else {
         $error = 'Vui lòng nhập đầy đủ thông tin đăng nhập!';
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - Hệ thống Quản lý Tuyển dụng</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body class="login-page">
@@ -50,6 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label><input type="checkbox" checked> Ghi nhớ đăng nhập</label>
             </div>
             <button type="submit" class="btn btn-primary btn-block">ĐĂNG NHẬP</button>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="../index.php" style="color: #64748b; font-size: 12px; text-decoration: none;">&larr; Quay về Trang chủ</a>
+            </div>
         </form>
     </div>
 </body>
