@@ -1,0 +1,83 @@
+@startuml
+hide methods
+hide stereotypes
+skinparam shadowing false
+skinparam linetype ortho
+
+entity "PhongBan" as PhongBan {
+  * MaPhongBan : AutoNumber <<PK>>
+  --
+  * TenPhongBan : Short Text(100)
+  * DangHoatDong : Yes/No
+}
+
+entity "ViTriTuyenDung" as ViTri {
+  * MaViTri : AutoNumber <<PK>>
+  --
+  * MaPhongBan : Long Integer <<FK>>
+  * TenViTri : Short Text(150)
+  * SoLuong : Integer
+  MoTaCongViec : Long Text
+  YeuCau : Long Text
+  QuyenLoi : Long Text
+  DiaDiem : Short Text(150)
+  HinhThucLamViec : Short Text(30)
+  LuongTu : Currency
+  LuongDen : Currency
+  * ThoaThuanLuong : Yes/No
+  * NgayDang : Date/Time
+  HanNop : Date/Time
+  * TrangThai : Short Text(20)
+  * HienThi : Yes/No
+  * NgayTao : Date/Time
+  NgayCapNhat : Date/Time
+}
+
+entity "UngVien" as UngVien {
+  * MaUngVien : AutoNumber <<PK>>
+  --
+  * HoTen : Short Text(100)
+  * Email : Short Text(100)
+  SoDienThoai : Short Text(15)
+}
+
+entity "HoSoUngTuyen" as HoSo {
+  * MaHoSo : AutoNumber <<PK>>
+  --
+  * MaUngVien : Long Integer <<FK>>
+  * MaViTri : Long Integer <<FK>>
+  * NgayNop : Date/Time
+  * TrangThaiHoSo : Short Text(30)
+}
+
+entity "KetQuaTuyenDung" as KetQua {
+  * MaKetQua : AutoNumber <<PK>>
+  --
+  * MaHoSo : Long Integer <<FK, UNIQUE>>
+  * KetQua : Short Text(20)
+  NgayQuyetDinh : Date/Time
+  NhanXet : Long Text
+  LuongDeXuat : Currency
+  NgayNhanViecDuKien : Date/Time
+  * TrangThaiPhanHoi : Short Text(30)
+  NguoiDuyet : Short Text(100)
+  * CongBo : Yes/No
+  * NgayTao : Date/Time
+  NgayCapNhat : Date/Time
+}
+
+PhongBan ||--o{ ViTri : quản lý
+ViTri ||--o{ HoSo : nhận
+UngVien ||--o{ HoSo : nộp
+HoSo ||--o| KetQua : có
+
+note right of KetQua
+MaHoSo có chỉ mục duy nhất:
+mỗi hồ sơ tối đa một kết quả.
+end note
+
+note bottom of ViTri
+Không xóa dây chuyền.
+Vị trí có hồ sơ phải chuyển Đã đóng.
+end note
+@enduml
