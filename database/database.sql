@@ -1,63 +1,157 @@
 -- CƠ SỞ DỮ LIỆU BÀI TẬP LỚN: HỆ THỐNG QUẢN LÝ TUYỂN DỤNG
--- Phù hợp MySQL / MariaDB (XAMPP, WAMP, LAMP)
+-- MySQL / MariaDB - XAMPP
 
-CREATE DATABASE IF NOT EXISTS tuyendung_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE tuyendung_db;
+CREATE DATABASE IF NOT EXISTS quanly_tuyen_dung
+CHARACTER SET utf8mb4
+COLLATE utf8mb4_unicode_ci;
 
--- 1. BẢNG VỊ TRÍ TUYỂN DỤNG
-CREATE TABLE IF NOT EXISTS vi_tri (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    ten_vi_tri VARCHAR(255) NOT NULL,
-    phong_ban VARCHAR(100) NOT NULL,
-    so_luong INT DEFAULT 1,
-    han_nop DATE,
-    trang_thai VARCHAR(50) DEFAULT 'Đang tuyển',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+USE quanly_tuyen_dung;
+
+-- 1. BẢNG PHÒNG BAN
+CREATE TABLE IF NOT EXISTS phongban (
+    MaPhongBan INT AUTO_INCREMENT PRIMARY KEY,
+    TenPhongBan VARCHAR(100) NOT NULL UNIQUE,
+    DangHoatDong TINYINT(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO vi_tri (ten_vi_tri, phong_ban, so_luong, han_nop, trang_thai) VALUES
-('Lập trình viên PHP', 'CNTT', 5, '2024-06-30', 'Đang tuyển'),
-('Nhân viên kinh doanh', 'Kinh doanh', 10, '2024-06-25', 'Đang tuyển'),
-('Kế toán tổng hợp', 'Kế toán', 2, '2024-06-20', 'Đang tuyển'),
-('Nhân viên nhân sự', 'Nhân sự', 2, '2024-06-15', 'Tạm dừng');
+INSERT IGNORE INTO phongban (MaPhongBan, TenPhongBan, DangHoatDong) VALUES
+(1, 'Công nghệ thông tin', 1),
+(2, 'Kinh doanh', 1),
+(3, 'Kế toán', 1),
+(4, 'Nhân sự', 1);
 
--- 2. BẢNG ỨNG VIÊN
-CREATE TABLE IF NOT EXISTS ung_vien (
+-- 2. BẢNG NGƯỜI DÙNG
+CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    ho_ten VARCHAR(255) NOT NULL,
-    so_dien_thoai VARCHAR(20),
-    email VARCHAR(100),
-    vi_tri_id INT,
-    kinh_nghiem VARCHAR(50),
-    trang_thai VARCHAR(50) DEFAULT 'Mới',
-    ngay_nop DATE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    username VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    ho_ten VARCHAR(100) NOT NULL,
+    role VARCHAR(30) NOT NULL DEFAULT 'nhanvien'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO ung_vien (ho_ten, so_dien_thoai, email, vi_tri_id, kinh_nghiem, trang_thai, ngay_nop) VALUES
-('Nguyễn Văn A', '0901234567', 'vana@gmail.com', 1, '2 năm', 'Mới', '2024-06-10'),
-('Trần Thị B', '0902345678', 'btran@gmail.com', 2, '3 năm', 'Đang xét duyệt', '2024-06-09'),
-('Lê Văn C', '0903456789', 'c.le@gmail.com', 3, '4 năm', 'Đã phỏng vấn', '2024-06-08'),
-('Phạm Thị D', '0904567891', 'dpham@gmail.com', 4, '1 năm', 'Không đạt', '2024-06-07');
-
--- 3. BẢNG LỊCH PHỎNG VẤN
-CREATE TABLE IF NOT EXISTS lich_phong_van (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    ung_vien_id INT,
-    thoi_gian TIME,
-    ngay_phong_van DATE,
-    thu_trong_tuan VARCHAR(10),
-    vong_phong_van VARCHAR(100),
-    phong_hop VARCHAR(50),
-    trang_thai VARCHAR(50) DEFAULT 'Đã xác nhận'
+-- 3. BẢNG ỨNG VIÊN
+CREATE TABLE IF NOT EXISTS ungvien (
+    MaUV INT AUTO_INCREMENT PRIMARY KEY,
+    HoTen VARCHAR(100) NOT NULL,
+    NgaySinh DATE,
+    GioiTinh VARCHAR(10),
+    Email VARCHAR(100),
+    SoDienThoai VARCHAR(15),
+    DiaChi VARCHAR(255),
+    KinhNghiem TEXT,
+    KyNang TEXT,
+    CV VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 4. BẢNG ĐÁNH GIÁ & KẾT QUẢ
-CREATE TABLE IF NOT EXISTS danh_gia (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    ung_vien_id INT,
-    diem_trung_binh DECIMAL(3,1),
-    nhan_xet TEXT,
-    ket_qua VARCHAR(50) DEFAULT 'Đạt',
-    ngay_quyet_dinh DATE
+-- 4. BẢNG VỊ TRÍ TUYỂN DỤNG
+CREATE TABLE IF NOT EXISTS vitrituyendung (
+    MaVT INT AUTO_INCREMENT PRIMARY KEY,
+    MaPhongBan INT,
+    TenViTri VARCHAR(100) NOT NULL,
+    SoLuong SMALLINT NOT NULL DEFAULT 1,
+    MoTa TEXT,
+    YeuCau TEXT,
+    QuyenLoi TEXT,
+    DiaDiem VARCHAR(150),
+    HinhThucLamViec VARCHAR(30),
+    LuongTu DECIMAL(15,2),
+    LuongDen DECIMAL(15,2),
+    ThoaThuanLuong TINYINT(1) NOT NULL DEFAULT 0,
+    NgayDang DATETIME,
+    Luong VARCHAR(50),
+    HanNop DATE,
+    TrangThai VARCHAR(30),
+    HienThi TINYINT(1) NOT NULL DEFAULT 1,
+    NgayTao DATETIME,
+    NgayCapNhat DATETIME,
+    CONSTRAINT FK_ViTri_PhongBan
+        FOREIGN KEY (MaPhongBan)
+        REFERENCES phongban(MaPhongBan)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE INDEX IX_ViTri_MaPhongBan
+ON vitrituyendung(MaPhongBan);
+
+CREATE INDEX IX_ViTri_TrangThai
+ON vitrituyendung(TrangThai);
+
+CREATE INDEX IX_ViTri_HanNop
+ON vitrituyendung(HanNop);
+
+-- 5. BẢNG HỒ SƠ ỨNG TUYỂN
+CREATE TABLE IF NOT EXISTS ungtuyen (
+    MaUT INT AUTO_INCREMENT PRIMARY KEY,
+    MaUV INT NOT NULL,
+    MaVT INT NOT NULL,
+    NgayUngTuyen DATE,
+    TrangThai VARCHAR(30),
+    CONSTRAINT FK_UngTuyen_UngVien
+        FOREIGN KEY (MaUV)
+        REFERENCES ungvien(MaUV),
+    CONSTRAINT FK_UngTuyen_ViTri
+        FOREIGN KEY (MaVT)
+        REFERENCES vitrituyendung(MaVT)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 6. BẢNG PHỎNG VẤN
+CREATE TABLE IF NOT EXISTS phongvan (
+    MaPV INT AUTO_INCREMENT PRIMARY KEY,
+    MaUT INT NOT NULL,
+    UserID INT,
+    NgayPhongVan DATE NOT NULL,
+    GioPhongVan TIME NOT NULL,
+    VongPhongVan VARCHAR(50),
+    HinhThuc VARCHAR(50),
+    DiaDiem VARCHAR(255),
+    NguoiPhongVan VARCHAR(100),
+    TrangThai VARCHAR(30) DEFAULT 'Đã lên lịch',
+    GhiChu TEXT,
+    CONSTRAINT FK_PhongVan_UngTuyen
+        FOREIGN KEY (MaUT)
+        REFERENCES ungtuyen(MaUT),
+    CONSTRAINT FK_PhongVan_Users
+        FOREIGN KEY (UserID)
+        REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 7. BẢNG ĐÁNH GIÁ
+CREATE TABLE IF NOT EXISTS danhgia (
+    MaDG INT AUTO_INCREMENT PRIMARY KEY,
+    MaPV INT NOT NULL,
+    UserID INT,
+    DiemChuyenMon DECIMAL(4,1),
+    DiemKyNang DECIMAL(4,1),
+    DiemThaiDo DECIMAL(4,1),
+    DiemTrungBinh DECIMAL(4,1),
+    NhanXet TEXT,
+    NguoiDanhGia VARCHAR(100),
+    NgayDanhGia DATE,
+    CONSTRAINT FK_DanhGia_PhongVan
+        FOREIGN KEY (MaPV)
+        REFERENCES phongvan(MaPV),
+    CONSTRAINT FK_DanhGia_Users
+        FOREIGN KEY (UserID)
+        REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 8. BẢNG KẾT QUẢ TUYỂN DỤNG
+CREATE TABLE IF NOT EXISTS ketqua (
+    MaKQ INT AUTO_INCREMENT PRIMARY KEY,
+    MaUT INT NOT NULL,
+    KetQua VARCHAR(30) NOT NULL,
+    NgayQuyetDinh DATE,
+    LyDo TEXT,
+    GhiChu TEXT,
+    LuongDeXuat DECIMAL(15,2),
+    NgayNhanViecDuKien DATE,
+    TrangThaiPhanHoi VARCHAR(30) NOT NULL DEFAULT 'Chưa gửi',
+    NguoiDuyet VARCHAR(100),
+    CongBo TINYINT(1) NOT NULL DEFAULT 0,
+    NgayTao DATETIME,
+    NgayCapNhat DATETIME,
+    CONSTRAINT FK_KetQua_UngTuyen
+        FOREIGN KEY (MaUT)
+        REFERENCES ungtuyen(MaUT)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

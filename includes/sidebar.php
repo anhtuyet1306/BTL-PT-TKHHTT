@@ -68,8 +68,8 @@ $userRole = $currentUser['role'] ?? '';
 
             <!-- Đánh giá -->
             <a
-                href="<?= $base ?>pages/danh-gia.php"
-                class="nav-item <?= $currentScript === 'danh-gia.php' ? 'active' : '' ?>"
+                href="<?= $base ?>pages/danh-sach-danh-gia.php"
+                class="nav-item <?= in_array($currentScript, ['danh-sach-danh-gia.php', 'danh-gia.php'], true) ? 'active' : '' ?>"
             >
                 <span class="nav-icon">&#128221;</span>
                 Đánh giá
@@ -108,7 +108,18 @@ $userRole = $currentUser['role'] ?? '';
 
         <?php else: ?>
 
-            <!-- Chưa đăng nhập -->
+            <!-- Khách chưa đăng nhập -->
+
+            <!-- Vị trí tuyển dụng -->
+            <a
+                href="<?= $base ?>pages/vi-tri-tuyen-dung.php"
+                class="nav-item <?= in_array($currentScript, ['vi-tri-tuyen-dung.php', 'chi-tiet-vi-tri.php'], true) ? 'active' : '' ?>"
+            >
+                <span class="nav-icon">&#128188;</span>
+                Vị trí tuyển dụng
+            </a>
+
+            <!-- Đăng nhập -->
             <a
                 href="<?= $base ?>pages/dang-nhap.php"
                 class="nav-item <?= $currentScript === 'dang-nhap.php' ? 'active' : '' ?>"
@@ -117,6 +128,7 @@ $userRole = $currentUser['role'] ?? '';
                 Đăng nhập
             </a>
 
+            <!-- Đăng ký -->
             <a
                 href="<?= $base ?>pages/dang-ky.php"
                 class="nav-item <?= $currentScript === 'dang-ky.php' ? 'active' : '' ?>"

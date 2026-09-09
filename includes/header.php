@@ -1,4 +1,5 @@
 <?php
+
 $base = isset($basePath) ? $basePath : '';
 
 if (!isset($pageTitle)) {
@@ -10,7 +11,6 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 $currentUser = $_SESSION['user'] ?? null;
-
 $userName = $currentUser['ho_ten'] ?? 'Khách';
 $userRole = $currentUser['role'] ?? '';
 
@@ -31,23 +31,22 @@ if ($currentUser && !empty($userName)) {
             mb_substr($parts[count($parts) - 1], 0, 1)
         );
     } else {
-        $userInitials = mb_strtoupper(mb_substr($userName, 0, 2));
+        $userInitials = mb_strtoupper(
+            mb_substr($userName, 0, 2)
+        );
     }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>
-        <?= htmlspecialchars($pageTitle) ?> - Quản lý Tuyển dụng
-    </title>
+    <title><?= htmlspecialchars($pageTitle) ?> - Quản lý Tuyển dụng</title>
 
-    <link rel="stylesheet" href="<?= $base ?>assets/css/style.css">
+    <link rel="stylesheet" href="<?= $base ?>assets/css/style.css?v=3">
 
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
@@ -59,17 +58,13 @@ if ($currentUser && !empty($userName)) {
 
 <div class="app-container">
 
-    <!-- Sidebar -->
     <?php include __DIR__ . '/sidebar.php'; ?>
 
-    <!-- Nội dung chính -->
     <main class="main-content">
 
-        <!-- Topbar -->
         <header class="topbar">
 
             <div class="user-greeting">
-
                 <?php if ($currentUser): ?>
 
                     Chào mừng,
@@ -87,7 +82,6 @@ if ($currentUser && !empty($userName)) {
                     <strong>Khách</strong>
 
                 <?php endif; ?>
-
             </div>
 
             <div class="topbar-actions">
@@ -131,5 +125,4 @@ if ($currentUser && !empty($userName)) {
 
         </header>
 
-        <!-- Nội dung trang -->
         <div class="page-body">

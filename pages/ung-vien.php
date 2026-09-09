@@ -1,14 +1,12 @@
 <?php
+require_once __DIR__ . '/../includes/auth.php';
+requireLogin();
 $basePath = '../';
 
 require_once __DIR__ . '/../config/database.php';
 
 $pageTitle = 'Quản lý Ứng viên';
 
-/*
- * Lấy danh sách ứng viên
- * ungvien -> ungtuyen -> vitrituyendung
- */
 $candidates = [];
 
 try {
@@ -21,12 +19,15 @@ try {
             uv.KinhNghiem AS kinh_nghiem,
             uv.KyNang AS ky_nang,
             vt.TenViTri AS vi_tri,
-            ut.TrangThai AS trang_thai
+            ut.TrangThai AS trang_thai,
+            pv.MaPV AS ma_pv
         FROM ungvien AS uv
         LEFT JOIN ungtuyen AS ut
             ON uv.MaUV = ut.MaUV
         LEFT JOIN vitrituyendung AS vt
             ON ut.MaVT = vt.MaVT
+        LEFT JOIN phongvan AS pv
+            ON ut.MaUT = pv.MaUT
         ORDER BY uv.MaUV DESC
     ";
 
@@ -50,7 +51,6 @@ include __DIR__ . '/../includes/header.php';
 
 <div class="filter-bar">
 
-    <!-- Tìm kiếm -->
     <input
         type="text"
         id="searchCandidate"
@@ -58,7 +58,6 @@ include __DIR__ . '/../includes/header.php';
         class="input-control"
     >
 
-    <!-- Lọc trạng thái -->
     <select id="statusFilter" class="select-control">
         <option value="">Tất cả trạng thái</option>
         <option value="Đã nộp">Đã nộp</option>
@@ -69,7 +68,6 @@ include __DIR__ . '/../includes/header.php';
 
 </div>
 
-<!-- Lưới ứng viên -->
 <div class="candidates-grid" id="candidateGrid">
 
     <?php if (empty($candidates)): ?>
@@ -181,12 +179,22 @@ include __DIR__ . '/../includes/header.php';
                         ) ?>
                     </span>
 
-                    <a
-                        href="danh-gia.php?candidate=<?= urlencode($c['id']) ?>"
-                        class="btn btn-sm btn-primary"
-                    >
-                        Chấm điểm
-                    </a>
+                    <?php if (!empty($c['ma_pv'])): ?>
+
+                        <a
+                            href="danh-gia.php?MaPV=<?= (int)$c['ma_pv'] ?>"
+                            class="btn btn-sm btn-primary"
+                        >
+                            Chấm điểm
+                        </a>
+
+                    <?php else: ?>
+
+                        <span class="btn btn-sm">
+                            Chưa có phỏng vấn
+                        </span>
+
+                    <?php endif; ?>
 
                 </div>
 
@@ -227,17 +235,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 status === '' ||
                 cardStatus === status;
 
-            if (matchKeyword && matchStatus) {
-                card.style.display = '';
-            } else {
-                card.style.display = 'none';
-            }
-
+            card.style.display =
+                matchKeyword && matchStatus
+                    ? ''
+                    : 'none';
         });
     }
 
     searchInput.addEventListener('input', filterCandidates);
-
     statusFilter.addEventListener('change', filterCandidates);
 
 });
