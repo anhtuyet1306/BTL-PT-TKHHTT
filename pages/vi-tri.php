@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/html; charset=UTF-8');
 $basePath = '../';
 require_once __DIR__ . '/../config/database.php';
 $pageTitle = 'Vị trí tuyển dụng';
