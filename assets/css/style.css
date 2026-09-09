@@ -776,14 +776,13 @@ textarea.input-control {
     border-bottom: 1px solid #f1f5f9;
 }
 
-/* Định dạng riêng cho thông tin chi tiết dạng lưới đẹp hơn */
 .eval-meta p {
     flex: 1 1 45%;
     margin-bottom: 6px;
 }
 
 .score-input {
-    width: 100px !important; /* Đặt lại độ rộng vừa phải, không bị tràn full width */
+    width: 100px !important;
     text-align: center;
     font-weight: 700;
     font-size: 15px;
@@ -1317,4 +1316,95 @@ textarea.input-control {
     .detail-actions .btn {
         width: 100%;
     }
+}
+/* =========================================================
+   LOGIN / REGISTER PAGE (CẬP NHẬT CĂN GIỮA & CHUẨN GIAO DIỆN)
+   ========================================================= */
+
+.login-page {
+    background-color: #1e2229;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    width: 100vw;
+    box-sizing: border-box;
+}
+
+.login-card {
+    background: #ffffff;
+    width: 420px; /* Tăng độ rộng lên chút cho form đăng ký không bị chật */
+    max-width: 100%;
+    padding: 36px 32px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+}
+
+/* Đảm bảo các ô input và nút trong form đăng ký tràn đầy 100% khung */
+.login-card .form-group {
+    margin-bottom: 16px;
+}
+
+.login-card .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.login-card .input-control {
+    width: 100% !important;
+    display: block;
+    box-sizing: border-box;
+}
+
+.login-card .btn-primary {
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.login-icon {
+    font-size: 40px;
+    color: #D32F2F;
+    margin-bottom: 8px;
+}
+
+.login-header h2 {
+    color: #0f172a;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.login-header p {
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 12px;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.login-footer a {
+    color: #D32F2F;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
 }
