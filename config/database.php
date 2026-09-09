@@ -1,60 +1,204 @@
 <?php
-/**
- * HỆ THỐNG QUẢN LÝ TUYỂN DỤNG - BTL PT-TKHHTT
- * File: config/database.php - Kết nối CSDL MySQL và dữ liệu mẫu
- */
+header('Content-Type: text/html; charset=UTF-8');
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Cấu hình kết nối MySQL (Mặc định XAMPP)
-$db_host = 'localhost';
-$db_user = 'root';
-$db_pass = '';
-$db_name = 'tuyendung_db';
+$accessFile = dirname(__DIR__) . '/database/access/TuyenDung_ViTri_KetQua.accdb';
+
+$pdo = null;
 
 try {
-    $pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8mb4", $db_user, $db_pass, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
+    if (!file_exists($accessFile)) {
+        throw new Exception('Không tìm thấy file Access: ' . $accessFile);
+    }
+
+    $dsn = "odbc:Driver={Microsoft Access Driver (*.mdb, *.accdb)};Dbq={$accessFile};";
+
+    $pdo = new PDO($dsn);
+
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    // Nếu chưa tạo CSDL MySQL, hệ thống tự động chạy với dữ liệu mẫu mượt mà
-    $pdo = null;
+    die(
+        '<h3>Lỗi kết nối Microsoft Access</h3>' .
+        '<p>' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . '</p>'
+    );
+} catch (Exception $e) {
+    die(
+        '<h3>Lỗi hệ thống</h3>' .
+        '<p>' . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . '</p>'
+    );
 }
 
-// Dữ liệu mẫu dùng chung cho toàn bộ các trang PHP
-$positions = [
-    ['id' => 1, 'stt' => 1, 'vi_tri' => 'Lập trình viên PHP', 'phong_ban' => 'CNTT', 'so_luong' => '05', 'han_nop' => '30/06/2024', 'trang_thai' => 'Đang tuyển'],
-    ['id' => 2, 'stt' => 2, 'vi_tri' => 'Nhân viên kinh doanh', 'phong_ban' => 'Kinh doanh', 'so_luong' => '10', 'han_nop' => '25/06/2024', 'trang_thai' => 'Đang tuyển'],
-    ['id' => 3, 'stt' => 3, 'vi_tri' => 'Kế toán tổng hợp', 'phong_ban' => 'Kế toán', 'so_luong' => '02', 'han_nop' => '20/06/2024', 'trang_thai' => 'Đang tuyển'],
-    ['id' => 4, 'stt' => 4, 'vi_tri' => 'Nhân viên nhân sự', 'phong_ban' => 'Nhân sự', 'so_luong' => '02', 'han_nop' => '15/06/2024', 'trang_thai' => 'Tạm dừng'],
-];
+$positions = [];
 
-$candidates = [
-    ['id' => 1, 'stt' => 1, 'ten' => 'Nguyễn Văn A', 'sdt' => '0901 234 567', 'email' => 'vana@gmail.com', 'vi_tri' => 'Lập trình viên PHP', 'kinh_nghiem' => '2 năm', 'trang_thai' => 'Mới'],
-    ['id' => 2, 'stt' => 2, 'ten' => 'Trần Thị B', 'sdt' => '0902 345 678', 'email' => 'btran@gmail.com', 'vi_tri' => 'Nhân viên kinh doanh', 'kinh_nghiem' => '3 năm', 'trang_thai' => 'Đang xét duyệt'],
-    ['id' => 3, 'stt' => 3, 'ten' => 'Lê Văn C', 'sdt' => '0903 456 789', 'email' => 'c.le@gmail.com', 'vi_tri' => 'Kế toán tổng hợp', 'kinh_nghiem' => '4 năm', 'trang_thai' => 'Đã phỏng vấn'],
-    ['id' => 4, 'stt' => 4, 'ten' => 'Phạm Thị D', 'sdt' => '0904 567 891', 'email' => 'dpham@gmail.com', 'vi_tri' => 'Nhân viên nhân sự', 'kinh_nghiem' => '1 năm', 'trang_thai' => 'Không đạt'],
-];
+try {
+    $sql = "
+        SELECT
+            v.MaViTri,
+            v.TenViTri,
+            p.TenPhongBan,
+            v.SoLuong,
+            v.HanNop,
+            v.TrangThai
+        FROM
+            ViTriTuyenDung AS v
+        INNER JOIN
+            PhongBan AS p
+        ON
+            v.MaPhongBan = p.MaPhongBan
+        ORDER BY
+            v.MaViTri
+    ";
 
-$applications = [
-    ['id' => 1, 'ung_vien' => 'Nguyễn Văn A', 'vi_tri' => 'Lập trình viên PHP', 'ngay_nop' => '10/06/2024', 'trang_thai' => 'Mới ứng tuyển', 'cv_file' => 'CV_NguyenVanA.pdf'],
-    ['id' => 2, 'ung_vien' => 'Trần Thị B', 'vi_tri' => 'Nhân viên kinh doanh', 'ngay_nop' => '09/06/2024', 'trang_thai' => 'Đang xét duyệt', 'cv_file' => 'CV_TranThiB.pdf'],
-    ['id' => 3, 'ung_vien' => 'Lê Văn C', 'vi_tri' => 'Kế toán tổng hợp', 'ngay_nop' => '08/06/2024', 'trang_thai' => 'Đã phỏng vấn', 'cv_file' => 'CV_LeVanC.pdf'],
-    ['id' => 4, 'ung_vien' => 'Phạm Thị D', 'vi_tri' => 'Nhân viên nhân sự', 'ngay_nop' => '07/06/2024', 'trang_thai' => 'Không đạt', 'cv_file' => 'CV_PhamThiD.pdf'],
-];
+    $stmt = $pdo->query($sql);
+    $stt = 1;
 
-$interviews = [
-    ['gio' => '09:00', 'ung_vien' => 'Nguyễn Văn A', 'vi_tri' => 'Lập trình viên PHP', 'vong' => 'Phỏng vấn vòng 1', 'phong' => 'Phòng 1', 'trang_thai' => 'Đã xác nhận', 'ngay' => 'T3'],
-    ['gio' => '10:30', 'ung_vien' => 'Trần Thị B', 'vi_tri' => 'Nhân viên kinh doanh', 'vong' => 'Phỏng vấn vòng 1', 'phong' => 'Phòng 2', 'trang_thai' => 'Chờ xác nhận', 'ngay' => 'T3'],
-    ['gio' => '14:00', 'ung_vien' => 'Lê Văn C', 'vi_tri' => 'Kế toán tổng hợp', 'vong' => 'Phỏng vấn vòng 2', 'phong' => 'Phòng 1', 'trang_thai' => 'Đã xác nhận', 'ngay' => 'T4'],
-];
+    while ($row = $stmt->fetch()) {
+        $positions[] = [
+            'id' => $row['MaViTri'],
+            'stt' => $stt++,
+            'vi_tri' => $row['TenViTri'],
+            'phong_ban' => $row['TenPhongBan'],
+            'so_luong' => str_pad(
+                (string) $row['SoLuong'],
+                2,
+                '0',
+                STR_PAD_LEFT
+            ),
+            'han_nop' => !empty($row['HanNop'])
+                ? date('d/m/Y', strtotime($row['HanNop']))
+                : '-',
+            'trang_thai' => $row['TrangThai']
+        ];
+    }
+} catch (PDOException $e) {
+    $positions = [];
+}
 
-$results = [
-    ['stt' => 1, 'ung_vien' => 'Nguyễn Văn A', 'vi_tri' => 'Lập trình viên PHP', 'ket_qua' => 'Đạt', 'ngay' => '12/06/2024'],
-    ['stt' => 2, 'ung_vien' => 'Trần Thị B', 'vi_tri' => 'Nhân viên KD', 'ket_qua' => 'Chờ quyết định', 'ngay' => '-'],
-    ['stt' => 3, 'ung_vien' => 'Lê Văn C', 'vi_tri' => 'Kế toán tổng hợp', 'ket_qua' => 'Không đạt', 'ngay' => '11/06/2024'],
-    ['stt' => 4, 'ung_vien' => 'Phạm Thị D', 'vi_tri' => 'Nhân viên nhân sự', 'ket_qua' => 'Không đạt', 'ngay' => '10/06/2024'],
-];
+$candidates = [];
+
+try {
+    $sql = "
+        SELECT
+            MaUngVien,
+            HoTen,
+            Email,
+            SoDienThoai
+        FROM
+            UngVien
+        ORDER BY
+            MaUngVien
+    ";
+
+    $stmt = $pdo->query($sql);
+    $stt = 1;
+
+    while ($row = $stmt->fetch()) {
+        $candidates[] = [
+            'id' => $row['MaUngVien'],
+            'stt' => $stt++,
+            'ten' => $row['HoTen'],
+            'sdt' => $row['SoDienThoai'],
+            'email' => $row['Email'],
+            'vi_tri' => '',
+            'kinh_nghiem' => '',
+            'trang_thai' => ''
+        ];
+    }
+} catch (PDOException $e) {
+    $candidates = [];
+}
+
+$applications = [];
+
+try {
+    $sql = "
+        SELECT
+            h.MaHoSo,
+            u.HoTen,
+            v.TenViTri,
+            h.NgayNop,
+            h.TrangThaiHoSo
+        FROM
+            HoSoUngTuyen AS h
+        INNER JOIN
+            UngVien AS u
+        ON
+            h.MaUngVien = u.MaUngVien
+        INNER JOIN
+            ViTriTuyenDung AS v
+        ON
+            h.MaViTri = v.MaViTri
+        ORDER BY
+            h.MaHoSo
+    ";
+
+    $stmt = $pdo->query($sql);
+
+    while ($row = $stmt->fetch()) {
+        $applications[] = [
+            'id' => $row['MaHoSo'],
+            'ung_vien' => $row['HoTen'],
+            'vi_tri' => $row['TenViTri'],
+            'ngay_nop' => !empty($row['NgayNop'])
+                ? date('d/m/Y', strtotime($row['NgayNop']))
+                : '-',
+            'trang_thai' => $row['TrangThaiHoSo'],
+            'cv_file' => ''
+        ];
+    }
+} catch (PDOException $e) {
+    $applications = [];
+}
+
+$results = [];
+
+try {
+    $sql = "
+        SELECT
+            k.MaKetQua,
+            u.HoTen,
+            v.TenViTri,
+            k.KetQua,
+            k.NgayQuyetDinh
+        FROM
+            KetQuaTuyenDung AS k
+        INNER JOIN
+            HoSoUngTuyen AS h
+        ON
+            k.MaHoSo = h.MaHoSo
+        INNER JOIN
+            UngVien AS u
+        ON
+            h.MaUngVien = u.MaUngVien
+        INNER JOIN
+            ViTriTuyenDung AS v
+        ON
+            h.MaViTri = v.MaViTri
+        ORDER BY
+            k.MaKetQua
+    ";
+
+    $stmt = $pdo->query($sql);
+    $stt = 1;
+
+    while ($row = $stmt->fetch()) {
+        $results[] = [
+            'stt' => $stt++,
+            'ung_vien' => $row['HoTen'],
+            'vi_tri' => $row['TenViTri'],
+            'ket_qua' => $row['KetQua'],
+            'ngay' => !empty($row['NgayQuyetDinh'])
+                ? date('d/m/Y', strtotime($row['NgayQuyetDinh']))
+                : '-'
+        ];
+    }
+} catch (PDOException $e) {
+    $results = [];
+}
+
+$interviews = [];
 ?>
